@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark Star Dispatch — Freight, Dispatched Right</title>
+<meta name="description" content="Dark Star Dispatch matches your load to a compliant truck, fast. Submit a load and hear back from a dispatcher within the hour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#141B26;
+    --navy-2:#1C2534;
+    --navy-3:#232E40;
+    --paper:#F6F3EC;
+    --paper-2:#EDE8DC;
+    --ink:#1C2430;
+    --ink-soft:#5B6472;
+    --amber:#D98E2B;
+    --amber-dark:#B8741C;
+    --route:#3E6A8C;
+    --route-light:#6C93B4;
+    --line:#D9D2C2;
+    --line-dark:#2E3A4E;
+    --error:#B6432E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand{font-family:'Fraunces',Georgia,serif;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  section{padding:clamp(56px,8vw,96px) 24px;}
+  .container{max-width:1080px;margin:0 auto;}
+  .container-narrow{max-width:760px;margin:0 auto;}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(20,27,38,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .nav-inner{
+    max-width:1080px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;
+  }
+  .nav-brand{
+    color:var(--paper);
+    font-weight:600;
+    font-size:17px;
+    letter-spacing:.01em;
+    text-decoration:none;
+  }
+  .nav-links{
+    display:flex;gap:28px;
+    list-style:none;margin:0;padding:0;
+  }
+  .nav-links a{
+    color:#B8C0CC;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--amber);}
+  .nav-cta{
+    background:var(--amber);
+    color:#1B1204;
+    padding:9px 18px;
+    border-radius:4px;
+    font-weight:600;
+    font-size:14px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--amber-dark);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed; top:60px; left:0; right:0;
+      background:var(--navy-2);
+      flex-direction:column;
+      gap:0;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .25s ease;
+      border-bottom:1px solid var(--line-dark);
+    }
+    .nav-links.open{max-height:280px;}
+    .nav-links a{
+      padding:14px 24px;
+      display:block;
+      border-top:1px solid var(--line-dark);
+    }
+    .nav-cta{display:none;}
+    .nav-links .nav-cta-mobile{
+      display:block;
+      margin:14px 24px;
+      text-align:center;
+    }
+    .nav-toggle{
+      display:block;
+      background:none;border:none;
+      color:var(--paper);
+      font-size:22px;
+      cursor:pointer;
+      padding:4px 8px;
+    }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background:var(--navy);
+    color:var(--paper);
+    overflow:hidden;
+    padding-top:clamp(64px,9vw,100px);
+    padding-bottom:clamp(90px,11vw,130px);
+  }
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+  .eyebrow{
+    font-size:14px;
+    color:var(--amber);
+    margin:0 0 20px;
+    font-weight:600;
+  }
+  .hero h1{
+    font-size:clamp(32px,5.2vw,50px);
+    line-height:1.08;
+    font-weight:600;
+    margin:0 0 18px;
+    max-width:15ch;
+  }
+  .hero p{
+    font-size:17px;
+    line-height:1.65;
+    color:#C7CDD8;
+    max-width:48ch;
+    margin:0 0 30px;
+  }
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;}
+  .btn-primary{
+    background:var(--amber);
+    color:#1B1204;
+    padding:13px 26px;
+    border-radius:4px;
+    font-weight:600;
+    font-size:15px;
+    text-decoration:none;
+    display:inline-block;
+    border:none;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--amber-dark);}
+  .btn-ghost{
+    border:1px solid #3D4A5E;
+    color:var(--paper);
+    padding:12px 25px;
+    border-radius:4px;
+    font-weight:500;
+    font-size:15px;
+    text-decoration:none;
+    display:inline-block;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--route-light);background:rgba(62,106,140,.12);}
+  .route-line{position:absolute;inset:0;z-index:1;opacity:.55;pointer-events:none;}
+
+  /* ---------- Services ---------- */
+  .section-head{max-width:560px;margin:0 0 44px;}
+  .section-head p.kicker{
+    color:var(--route);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.05em;
+    margin:0 0 10px;
+  }
+  .section-head h2{
+    font-size:clamp(26px,3.4vw,34px);
+    font-weight:600;
+    margin:0 0 10px;
+    line-height:1.15;
+  }
+  .section-head p{color:var(--ink-soft);font-size:15px;line-height:1.6;margin:0;}
+
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .service{
+    background:var(--paper);
+    padding:30px 26px;
+  }
+  .service .num{
+    font-family:'Fraunces',serif;
+    font-size:13px;
+    color:var(--route);
+    font-weight:600;
+    margin-bottom:14px;
+    display:block;
+  }
+  .service h3{
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 10px;
+  }
+  .service p{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.6;
+    margin:0;
+  }
+
+  @media (max-width:760px){
+    .services-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- How it works ---------- */
+  .how{background:var(--navy-2);color:var(--paper);}
+  .how .section-head p.kicker{color:var(--amber);}
+  .how .section-head h2{color:var(--paper);}
+  .how .section-head p{color:#AEB6C2;}
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+  }
+  .step{
+    border-top:2px solid var(--amber);
+    padding-top:18px;
+  }
+  .step .step-no{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    font-weight:600;
+    color:var(--amber);
+    display:block;
+    margin-bottom:12px;
+  }
+  .step h3{font-size:16px;font-weight:600;margin:0 0 8px;color:var(--paper);}
+  .step p{font-size:13.5px;color:#AEB6C2;line-height:1.55;margin:0;}
+
+  @media (max-width:820px){
+    .steps{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:480px){
+    .steps{grid-template-columns:1fr;}
+  }
+
+  /* ---------- Manifest / form ---------- */
+  .form-section{background:var(--paper-2);}
+  .manifest{
+    background:var(--paper);
+    border-radius:3px;
+    box-shadow:0 30px 60px -24px rgba(10,14,20,.28);
+    max-width:760px;
+    margin:0 auto;
+    position:relative;
+  }
+  .manifest::before{
+    content:"";
+    position:absolute;left:0;right:0;top:0;height:6px;
+    background:repeating-linear-gradient(90deg,var(--amber) 0 18px,transparent 18px 30px);
+    border-radius:3px 3px 0 0;
+  }
+  .manifest-head{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+    padding:30px 34px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .manifest-head h2{font-size:22px;font-weight:600;margin:0 0 4px;}
+  .manifest-head p{margin:0;font-size:14px;color:var(--ink-soft);}
+  .manifest-id{font-family:monospace;font-size:12px;color:var(--ink-soft);text-align:right;white-space:nowrap;padding-top:4px;}
+
+  form{padding:8px 34px 34px;}
+  fieldset{border:none;margin:0 0 8px;padding:22px 0 6px;border-top:1px solid var(--line);}
+  fieldset:first-of-type{border-top:none;}
+  legend{font-size:11px;letter-spacing:.06em;color:var(--route);font-weight:600;padding:0;margin-bottom:14px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;}
+  .field{margin-bottom:16px;}
+  .field.full{grid-column:1 / -1;}
+  label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+  label .opt{color:var(--ink-soft);font-weight:400;}
+  input,select,textarea{
+    width:100%;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);
+    background:#fff;border:1px solid #CBC3AE;border-radius:4px;padding:11px 12px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  textarea{resize:vertical;min-height:80px;}
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--route);box-shadow:0 0 0 3px rgba(62,106,140,.18);
+  }
+  .checkline{display:flex;align-items:center;gap:9px;margin-top:4px;}
+  .checkline input[type=checkbox]{width:16px;height:16px;accent-color:var(--route);}
+  .checkline label{margin:0;font-weight:400;font-size:14px;color:var(--ink);}
+  .actions{display:flex;align-items:center;gap:16px;margin-top:12px;flex-wrap:wrap;}
+  button{
+    background:var(--amber);color:#1B1204;border:none;font-family:'Inter',sans-serif;
+    font-weight:600;font-size:15px;padding:13px 26px;border-radius:4px;cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  button:hover{background:var(--amber-dark);}
+  button:active{transform:translateY(1px);}
+  button:disabled{background:#CBB78A;cursor:not-allowed;}
+  .status{font-size:14px;display:none;}
+  .status.show{display:block;}
+  .status.err{color:var(--error);}
+  .success{display:none;padding:40px 34px 44px;text-align:center;}
+  .success.show{display:block;}
+  .success .mark{
+    width:44px;height:44px;border-radius:50%;background:var(--route);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:20px;
+  }
+  .success h2{font-size:20px;margin:0 0 8px;}
+  .success p{color:var(--ink-soft);font-size:14px;margin:0 0 22px;line-height:1.6;}
+  .success button{background:transparent;border:1px solid #CBC3AE;color:var(--ink);}
+  .success button:hover{background:var(--paper-2);}
+
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr;}
+    .manifest-head{flex-direction:column;padding:26px 22px 18px;}
+    .manifest-id{text-align:left;}
+    form{padding:8px 22px 28px;}
+  }
+
+  /* ---------- Contact / footer ---------- */
+  footer{
+    background:var(--navy);
+    color:#AEB6C2;
+    padding:56px 24px 32px;
+  }
+  .footer-inner{
+    max-width:1080px;margin:0 auto;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:40px;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .footer-brand{color:var(--paper);font-size:18px;font-weight:600;margin:0 0 12px;}
+  .footer-inner p{font-size:14px;line-height:1.6;margin:0;color:#8B95A6;}
+  .footer-col h4{
+    color:var(--paper);font-size:13px;letter-spacing:.04em;
+    margin:0 0 14px;font-weight:600;
+  }
+  .footer-col a{
+    display:block;color:#AEB6C2;text-decoration:none;font-size:14px;
+    margin-bottom:10px;transition:color .15s ease;
+  }
+  .footer-col a:hover{color:var(--amber);}
+  .footer-bottom{
+    max-width:1080px;margin:24px auto 0;
+    font-size:12px;color:#6B7383;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:700px){
+    .footer-inner{grid-template-columns:1fr;}
+  }
+
+  /* ---------- WhatsApp floating button ---------- */
+  .wa-float{
+    position:fixed;
+    right:20px; bottom:20px;
+    z-index:60;
+    display:flex;align-items:center;gap:10px;
+    background:#25D366;
+    color:#0B1D14;
+    text-decoration:none;
+    padding:13px 18px 13px 14px;
+    border-radius:999px;
+    box-shadow:0 10px 26px -8px rgba(0,0,0,.45);
+    font-weight:600;
+    font-size:14px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .wa-float:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(0,0,0,.5);}
+  .wa-float svg{width:22px;height:22px;flex-shrink:0;}
+  .wa-float span{white-space:nowrap;}
+  @media (max-width:500px){
+    .wa-float span{display:none;}
+    .wa-float{padding:14px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">DARK STAR DISPATCH</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#submit">Submit a load</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#submit" class="nav-cta-mobile btn-primary" style="text-decoration:none;">Submit a load</a></li>
+    </ul>
+    <a href="#submit" class="nav-cta">Submit a load</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <svg class="route-line" viewBox="0 0 800 420" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M -20 360 C 160 300, 260 380, 420 300 S 640 160, 840 210" fill="none" stroke="#3E6A8C" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round"/>
+    <path d="M -20 260 C 140 220, 300 300, 460 200 S 700 60, 860 120" fill="none" stroke="#D98E2B" stroke-width="1.5" stroke-dasharray="1 9" stroke-linecap="round" opacity="0.6"/>
+    <circle cx="420" cy="300" r="3" fill="#D98E2B"/>
+    <circle cx="460" cy="200" r="3" fill="#3E6A8C"/>
+  </svg>
+  <div class="hero-inner">
+    <p class="eyebrow">FOR BROKERS &amp; SHIPPERS</p>
+    <h1>Send us the load, we'll send back a truck.</h1>
+    <p>Post your lane and a dispatcher reviews it within the hour — matched against a compliant fleet, not a guess. No account, no waiting on hold.</p>
+    <div class="hero-actions">
+      <a href="#submit" class="btn-primary">Submit a load</a>
+      <a href="#how" class="btn-ghost">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">WHAT WE DO</p>
+      <h2>Dispatch that covers the whole lane</h2>
+      <p>From the moment your load lands with us to the moment it's delivered, one team keeps it moving.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service">
+        <span class="num">01</span>
+        <h3>Load matching</h3>
+        <p>Your lane is checked against available trucks by payload, equipment type, and postcode before anything is confirmed.</p>
+      </div>
+      <div class="service">
+        <span class="num">02</span>
+        <h3>Compliance-checked drivers</h3>
+        <p>Every match is run against driving-hours and rest-period rules first, so the truck you get can legally make the run.</p>
+      </div>
+      <div class="service">
+        <span class="num">03</span>
+        <h3>Straight-line communication</h3>
+        <p>Rate confirmations, pickup details, and POD come back to you directly — no chasing, no re-explaining the load twice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">HOW IT WORKS</p>
+      <h2>Four steps, one dispatcher</h2>
+      <p>The same person who confirms your load is who you'll speak to if anything changes.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-no">1</span>
+        <h3>Submit the load</h3>
+        <p>Fill in origin, destination, rate, and pickup date — takes under two minutes.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">2</span>
+        <h3>Dispatch reviews it</h3>
+        <p>We match it to an available, compliant truck and driver on our board.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">3</span>
+        <h3>You get a confirmation</h3>
+        <p>Rate, driver, and pickup window confirmed back to you — usually within the hour.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">4</span>
+        <h3>We track it through</h3>
+        <p>Pickup to delivery, with proof of delivery sent as soon as it's signed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="form-section" id="submit">
+  <div class="container-narrow">
+    <div class="manifest">
+      <div class="manifest-head">
+        <div>
+          <h2>Load Submission</h2>
+          <p>Fields marked * are required to get you a quote.</p>
+        </div>
+        <div class="manifest-id" id="manifestId">MANIFEST — DRAFT</div>
+      </div>
+
+      <form id="loadForm" novalidate>
+        <fieldset>
+          <legend>YOUR COMPANY</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="broker">Company / Broker name *</label>
+              <input id="broker" name="broker" type="text" required placeholder="e.g. ABC Logistics Ltd">
+            </div>
+            <div class="field">
+              <label for="mc">MC / DOT number <span class="opt">(optional)</span></label>
+              <input id="mc" name="mc" type="text" placeholder="e.g. MC-123456">
+            </div>
+            <div class="field">
+              <label for="contact">Contact name *</label>
+              <input id="contact" name="contact" type="text" required placeholder="Full name">
+            </div>
+            <div class="field">
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" required placeholder="you@company.com">
+            </div>
+            <div class="field full">
+              <label for="phone">Phone *</label>
+              <input id="phone" name="phone" type="tel" required placeholder="+44 7000 000000">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>THE LOAD</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="origin">Origin *</label>
+              <input id="origin" name="origin" type="text" required placeholder="City, postcode">
+            </div>
+            <div class="field">
+              <label for="destination">Destination *</label>
+              <input id="destination" name="destination" type="text" required placeholder="City, postcode">
+            </div>
+            <div class="field">
+              <label for="pickup">Pickup date *</label>
+              <input id="pickup" name="pickup" type="date" required>
+            </div>
+            <div class="field">
+              <label for="rate">Rate offered *</label>
+              <input id="rate" name="rate" type="text" required placeholder="e.g. £450">
+            </div>
+            <div class="field">
+              <label for="vehicle">Vehicle / equipment type *</label>
+              <select id="vehicle" name="vehicle" required>
+                <option value="" disabled selected>Select type</option>
+                <option>Curtain-side</option>
+                <option>Box Van / Rigid</option>
+                <option>Flatbed</option>
+                <option>Refrigerated (Reefer)</option>
+                <option>Tautliner</option>
+                <option>Tanker</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="weight">Payload weight <span class="opt">(optional)</span></label>
+              <input id="weight" name="weight" type="text" placeholder="e.g. 12,000 kg">
+            </div>
+            <div class="field full">
+              <div class="checkline">
+                <input id="tailgate" name="tailgate" type="checkbox">
+                <label for="tailgate">Tail-lift / tailgate required</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label for="notes">Notes <span class="opt">(optional)</span></label>
+              <textarea id="notes" name="notes" placeholder="Anything dispatch should know — access restrictions, time windows, ADR, etc."></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">Submit load</button>
+          <span class="status" id="statusMsg"></span>
+        </div>
+      </form>
+
+      <div class="success" id="successPanel">
+        <div class="mark">✓</div>
+        <h2>Load received</h2>
+        <p>Thanks — this has landed on our dispatch board. A dispatcher will come back to you shortly with a rate confirmation.</p>
+        <button type="button" id="submitAnother">Submit another load</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">DARK STAR DISPATCH</p>
+      <p>Freight dispatch for brokers and shippers who'd rather send one form than make five calls.</p>
+    </div>
+    <div class="footer-col">
+      <h4>GET IN TOUCH</h4>
+      <a href="https://wa.me/923374232816" target="_blank" rel="noopener">WhatsApp: 0337 4232816</a>
+      <a href="mailto:darkstar24050@gmail.com">darkstar24050@gmail.com</a>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATE</h4>
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#submit">Submit a load</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> Dark Star Dispatch</span>
+    <span>All loads confirmed by a dispatcher before pickup</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/923374232816?text=Hi%20Dark%20Star%20Dispatch%2C%20I%20have%20a%20load%20to%20send" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.47 2.03 7.76L0 32l8.46-2.22A15.9 15.9 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm0 29.09c-2.5 0-4.84-.68-6.85-1.86l-.49-.29-5.02 1.32 1.34-4.9-.32-.5A13.05 13.05 0 0 1 2.91 16C2.91 8.78 8.78 2.91 16 2.91S29.09 8.78 29.09 16 23.22 29.09 16 29.09zm7.17-9.78c-.39-.2-2.33-1.15-2.69-1.28-.36-.13-.62-.2-.89.2-.26.39-1.02 1.28-1.25 1.54-.23.26-.46.29-.85.1-.39-.2-1.66-.61-3.16-1.95-1.17-1.04-1.96-2.33-2.19-2.72-.23-.39-.02-.6.17-.8.18-.18.39-.46.59-.69.2-.23.26-.39.39-.66.13-.26.07-.49-.03-.69-.1-.2-.89-2.14-1.22-2.93-.32-.77-.65-.67-.89-.68l-.76-.01c-.26 0-.69.1-1.05.49-.36.39-1.38 1.35-1.38 3.29s1.41 3.82 1.61 4.08c.2.26 2.78 4.25 6.74 5.96.94.41 1.68.65 2.25.83.95.3 1.81.26 2.49.16.76-.11 2.33-.95 2.66-1.87.33-.92.33-1.71.23-1.87-.1-.16-.36-.26-.75-.46z"/></svg>
+  <span>Chat on WhatsApp</span>
+</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  // ── CONFIGURE THIS ──────────────────────────────────────────────
+  const ENDPOINT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  // ─────────────────────────────────────────────────────────────
+
+  const form = document.getElementById('loadForm');
+  const statusEl = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+  const successPanel = document.getElementById('successPanel');
+  const manifestIdEl = document.getElementById('manifestId');
+
+  function stampManifest(){
+    const now = new Date();
+    const stamp = now.toISOString().slice(0,10).replace(/-/g,'');
+    manifestIdEl.textContent = 'MANIFEST — ' + stamp;
+  }
+  stampManifest();
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (!form.checkValidity()){ form.reportValidity(); return; }
+
+    if (ENDPOINT_URL.indexOf('PASTE_YOUR') === 0){
+      statusEl.textContent = 'Form not connected yet — set ENDPOINT_URL in the page source.';
+      statusEl.className = 'status show err';
+      return;
+    }
+
+    const data = {
+      broker: form.broker.value.trim(),
+      mc: form.mc.value.trim(),
+      contact: form.contact.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      origin: form.origin.value.trim(),
+      destination: form.destination.value.trim(),
+      pickup: form.pickup.value,
+      rate: form.rate.value.trim(),
+      vehicle: form.vehicle.value,
+      weight: form.weight.value.trim(),
+      tailgate: form.tailgate.checked ? 'Yes' : 'No',
+      notes: form.notes.value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    statusEl.className = 'status show';
+    statusEl.textContent = '';
+
+    try {
+      await fetch(ENDPOINT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+      form.style.display = 'none';
+      successPanel.classList.add('show');
+    } catch (err) {
+      statusEl.textContent = 'Something went wrong — please try again or message us on WhatsApp.';
+      statusEl.className = 'status show err';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit load';
+    }
+  });
+
+  document.getElementById('submitAnother').addEventListener('click', function(){
+    form.reset();
+    form.style.display = 'block';
+    successPanel.classList.remove('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit load';
+    statusEl.className = 'status';
+    stampManifest();
+  });
+</script>
+
+</body>
+</html>
